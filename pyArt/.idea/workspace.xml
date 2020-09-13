@@ -8,10 +8,18 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="ProjectId" id="1YrOkHcYT0kxy38K8yFAnsxz6ZW" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/cross_validation.py" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -25,6 +33,57 @@
       </list>
     </option>
   </component>
+  <component name="RunManager" selected="Python.feature_selection">
+    <configuration name="cross_validation" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="pyArt" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\Artur\PycharmProjects\untitled\venv\Scripts\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/cross_validation.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="feature_selection" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <module name="pyArt" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/feature_selection.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.feature_selection" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -37,6 +96,28 @@
       <updated>1583697387343</updated>
       <workItem from="1583697389639" duration="3137000" />
       <workItem from="1584876933103" duration="1275000" />
+      <workItem from="1586905253707" duration="283000" />
+      <workItem from="1586932192799" duration="3778000" />
+      <workItem from="1587224155431" duration="669000" />
+      <workItem from="1587576875727" duration="1447000" />
+      <workItem from="1587644543089" duration="4386000" />
+      <workItem from="1588072391880" duration="6289000" />
+      <workItem from="1588175406625" duration="1895000" />
+      <workItem from="1588184930996" duration="18000" />
+      <workItem from="1588343348253" duration="12883000" />
+      <workItem from="1588368443324" duration="15282000" />
+      <workItem from="1588579373687" duration="1441000" />
+      <workItem from="1588698961267" duration="923000" />
+      <workItem from="1588746412337" duration="4090000" />
+      <workItem from="1588771270027" duration="237000" />
+      <workItem from="1588772383790" duration="2184000" />
+      <workItem from="1588843323945" duration="599000" />
+      <workItem from="1588859729453" duration="4504000" />
+      <workItem from="1589315262078" duration="3254000" />
+      <workItem from="1589550590028" duration="10608000" />
+      <workItem from="1590617929051" duration="3028000" />
+      <workItem from="1592472082435" duration="1861000" />
+      <workItem from="1593447484155" duration="642000" />
     </task>
     <servers />
   </component>
