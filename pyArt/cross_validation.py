@@ -54,7 +54,7 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         self.fold_data = []
 
         if not is_silent:
-            print(f'Number of columns = {X.shape[0]}\n')
+            print(f'Data size = {X.shape}\n')
 
         for fold, (idx_trn, idx_val) in enumerate(self.splitter):
             start_time = timeit.default_timer()
