@@ -28,7 +28,8 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
 
     def __init__(self, estimator, cv, metric='auc'):
         metric_dict = {'auc': roc_auc_score,
-                       'logloss': log_loss}
+                       'logloss': log_loss
+                       }
         self.cv = cv
         self.estimator = estimator
         self.model_name = _estimator_name(estimator)
@@ -37,35 +38,29 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         self._is_fitted = False
         self._is_predicted = False
 
-    def fit(self, train, cols_cv, TARGET, FIT_PARAMS, cols_encode=None, groups=None, is_silent=False):
-        self.train = train
-        self.cols_cv = cols_cv
-        self.TARGET = TARGET
+    def fit(self, X, y, FIT_PARAMS, groups=None, is_silent=False):
+        self.X = X
+        self.y = y
         self.is_silent = is_silent
         if self.is_silent:
             FIT_PARAMS['verbose'] = 0
         self.FIT_PARAMS = FIT_PARAMS
         self.groups = groups
-        self.cols_encode = cols_encode
 
-        self.splitter = self.cv.split(self.train[self.cols_cv], self.train[self.TARGET], groups=self.groups)
+        self.splitter = self.cv.split(self.X, self.y, groups=self.groups)
 
         self.model_list, self.trn_score, self.val_score = [], [], []
-        self.val_predict = np.zeros(self.train.shape[0])
+        self.val_predict = np.zeros(self.X.shape[0])
         self.fold_data = []
 
         if not is_silent:
-            print(f'Number of columns = {len(cols_cv)}\n')
-
-        if cols_encode is not None:
-            self.dict_ce_global_mapping = {}
-            self.grlobal_y = np.mean(self.train[self.TARGET])
+            print(f'Number of columns = {X.shape[0]}\n')
 
         for fold, (idx_trn, idx_val) in enumerate(self.splitter):
             start_time = timeit.default_timer()
 
-            X_trn, y_trn = self.train[self.cols_cv].iloc[idx_trn], self.train[self.TARGET].iloc[idx_trn]
-            X_val, y_val = self.train[self.cols_cv].iloc[idx_val], self.train[self.TARGET].iloc[idx_val]
+            X_trn, y_trn = self.X.iloc[idx_trn], self.y.iloc[idx_trn]
+            X_val, y_val = self.X.iloc[idx_val], self.y.iloc[idx_val]
 
             self.fold_data.append([idx_trn, idx_val])
 
@@ -91,9 +86,6 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
 
             metric = self.metric_name
 
-            # return self.estimator
-
-
             if not is_silent:
                 if self.model_name == 'lgb':
                     print(
@@ -115,15 +107,15 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
             raise ValueError('Model not fitted, use ".fit" method.')
         self.test = test
         self.tst_predict = np.zeros(test.shape[0])
-        
+
         for model in self.model_list:
-            self.tst_predict += model.predict_proba(test[self.cols_cv], num_iteration=model.best_iteration_)[:, 1] / self.cv.n_splits
+            self.tst_predict += model.predict_proba(test, num_iteration=model.best_iteration_)[:, 1] / self.cv.n_splits
 
         self._is_predicted = True
 
         return self.tst_predict
 
-    # TODO predict_proba
+    # TODO predict
     def __predict(self, test):
         pass
 
@@ -131,12 +123,12 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         assert self._is_fitted is True, '''Instance is not fitted yet. Call 'fit' with appropriate arguments before
         using this estimator'''
 
-        df_fi = pd.DataFrame(index=self.cols_cv,
+        df_fi = pd.DataFrame(index=self.X.columns.tolist(),
                              columns=[f'Fold_{i}' for i in range(self.cv.n_splits)])
         for fold, (model, (idx_trn, idx_val)) in enumerate(
                 tqdm(zip(self.model_list, self.fold_data), total=self.cv.n_splits)):
-            X_val = self.train[self.cols_cv].iloc[idx_val]
-            y_val = self.train[self.TARGET].iloc[idx_val]
+            X_val = self.X.iloc[idx_val]
+            y_val = self.y.iloc[idx_val]
             result = permutation_importance(model, X_val, y_val, **PARAMS)
 
             df_fi.loc[:, f'Fold_{fold}'] = result.importances_mean
@@ -149,8 +141,8 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         using this estimator'''
         assert importance_type in ['both', 'gain', 'split'], f'''Importance type {importance_type} not implemented.'''
 
-        df_fi = pd.DataFrame(np.zeros((len(self.cols_cv), len(['gain', 'split']))),
-                             index=self.cols_cv,
+        df_fi = pd.DataFrame(np.zeros((self.X.shape[1], len(['gain', 'split']))),
+                             index=self.X.columns.tolist(),
                              columns=['gain', 'split'])
 
         for fold, model in enumerate(self.model_list):
@@ -161,12 +153,13 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         if importance_type == 'both':
             return df_fi
         else:
-            df_fi[importance_type]
+            return df_fi[importance_type]
 
     # TODO
     def __shap_importance(self, PARAMS):
         pass
 
+    # TODO remove from this class
     def submit(self, cmpt_name, sub_dir='submissions', sample_sub='sample_submission.csv', prefix='sub', text_msg=None,
                send=True):
         assert self._is_predicted is True, 'There is no prediction to submit.'
@@ -193,6 +186,7 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         if send:
             kgl.api.competition_submit(f'{sub_path}/{file_name}', message=text_msg, competition=cmpt_name)
 
+    # TODO remove from this class
     def _save(self, path, params=True, models=True, indexes=True, features=True, predicts=True):
 
         # save parameters
