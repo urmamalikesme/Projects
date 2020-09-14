@@ -78,7 +78,7 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
             self.val_predict[idx_val] = self.estimator.predict_proba(X_val, num_iteration=self.estimator.best_iteration_)[:, 1]
             val_curr_score = self.metric(y_val, self.val_predict[idx_val])
             self.val_score.append(val_curr_score)
-
+            
             elapsed_time = timeit.default_timer() - start_time
 
             del X_trn, X_val, y_trn, y_val
