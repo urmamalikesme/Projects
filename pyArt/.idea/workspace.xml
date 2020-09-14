@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fa8439c8-0006-4233-a3bd-6b632a1b720f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cross_validation.py" beforeDir="false" afterPath="$PROJECT_DIR$/cross_validation.py" afterDir="false" />
-    </list>
+    <list default="true" id="fa8439c8-0006-4233-a3bd-6b632a1b720f" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,7 +111,7 @@
       <workItem from="1593447484155" duration="642000" />
       <workItem from="1600031778148" duration="69000" />
       <workItem from="1600032035291" duration="13000" />
-      <workItem from="1600032080066" duration="3797000" />
+      <workItem from="1600032080066" duration="4580000" />
     </task>
     <servers />
   </component>
