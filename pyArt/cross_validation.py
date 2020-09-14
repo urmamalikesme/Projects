@@ -67,36 +67,6 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
             X_trn, y_trn = self.train[self.cols_cv].iloc[idx_trn], self.train[self.TARGET].iloc[idx_trn]
             X_val, y_val = self.train[self.cols_cv].iloc[idx_val], self.train[self.TARGET].iloc[idx_val]
 
-            # TODO categorical encoding
-            if cols_encode is not None:
-                dict_ce_col_mapping = {}
-                cv_ce = StratifiedKFold(n_splits=5, shuffle=True, random_state=121352)  # TODO заменить на что-нибудь нормальное
-                for fold_1, (trn_idx_1, val_idx_1) in enumerate(cv_ce.split(X_trn, y_trn)):
-
-                    x_trn_1, y_trn_1 = X_trn.iloc[trn_idx_1][cols_encode], y_trn.iloc[trn_idx_1]
-
-                    x_trn_1 = pd.concat([x_trn_1, y_trn_1], axis=1)
-
-                    global_mean = np.mean(y_trn_1)
-
-                    for col in cols_encode:
-                        col_mean_mapper = x_trn_1.groupby([col])[self.TARGET].mean()
-
-                        X_trn[col].iloc[val_idx_1] = X_trn[col].iloc[val_idx_1].map(col_mean_mapper).fillna(global_mean)
-
-                        if fold_1 == 0:
-                            dict_ce_col_mapping[col] = col_mean_mapper / cv_ce.n_splits
-                        else:
-                            dict_ce_col_mapping[col] += col_mean_mapper / cv_ce.n_splits
-
-                for col in cols_encode:
-                    X_val[col] = X_val[col].map(dict_ce_col_mapping[col]).fillna(np.mean(y_trn))
-
-                    if fold == 0:
-                        self.dict_ce_global_mapping[col] = dict_ce_col_mapping[col]/self.cv.n_splits
-                    else:
-                        self.dict_ce_global_mapping[col] += dict_ce_col_mapping[col]/self.cv.n_splits
-
             self.fold_data.append([idx_trn, idx_val])
 
             if self.model_name == 'lgb':
@@ -145,11 +115,7 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
             raise ValueError('Model not fitted, use ".fit" method.')
         self.test = test
         self.tst_predict = np.zeros(test.shape[0])
-
-        if self.cols_encode is not None:
-            for col in self.cols_encode:
-                test[col] = test[col].map(self.dict_ce_global_mapping[col]).fillna(self.grlobal_y)
-
+        
         for model in self.model_list:
             self.tst_predict += model.predict_proba(test[self.cols_cv], num_iteration=model.best_iteration_)[:, 1] / self.cv.n_splits
 
