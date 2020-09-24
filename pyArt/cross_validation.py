@@ -72,10 +72,10 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
                 raise ValueError('Model not implemented.')
             self.model_list.append(self.estimator)
 
-            trn_curr_score = self.metric(y_trn, self.estimator.predict_proba(X_trn, num_iteration=self.estimator.best_iteration_)[:, 1])
+            trn_curr_score = self.metric(y_trn, self.estimator.predict_proba(X_trn)[:, 1])
             self.trn_score.append(trn_curr_score)
 
-            self.val_predict[idx_val] = self.estimator.predict_proba(X_val, num_iteration=self.estimator.best_iteration_)[:, 1]
+            self.val_predict[idx_val] = self.estimator.predict_proba(X_val)[:, 1]
             val_curr_score = self.metric(y_val, self.val_predict[idx_val])
             self.val_score.append(val_curr_score)
 
@@ -109,7 +109,7 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
         self.tst_predict = np.zeros(test.shape[0])
 
         for model in self.model_list:
-            self.tst_predict += model.predict_proba(test, num_iteration=model.best_iteration_)[:, 1] / self.cv.n_splits
+            self.tst_predict += model.predict_proba(test)[:, 1] / self.cv.n_splits
 
         self._is_predicted = True
 
@@ -146,6 +146,7 @@ class CrossValidation(BaseEstimator, ClassifierMixin):
                              columns=['gain', 'split'])
 
         for fold, model in enumerate(self.model_list):
+            #TODO убрать booster
             df_fi['gain'] += model.booster_.feature_importance('gain') / self.cv.n_splits
             df_fi['split'] += model.booster_.feature_importance('split') / self.cv.n_splits
         self.tree_fi = df_fi
